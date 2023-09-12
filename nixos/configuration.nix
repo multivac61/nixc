@@ -76,6 +76,8 @@
       git
       starship
       neofetch
+      screenfetch
+      cowsay
     ];
   };
 
