@@ -47,17 +47,13 @@
   };
 
   # Add stuff for your user as you see fit:
-  programs.neovim = {
-    enable = true;
-
-    viAlias = true;
-    vimAlias = true;
-    vimdiffAlias = true;
-
-    withNodeJs = true;
-    withPython3 = true;
-    withRuby = false;
-  };
+  # programs.neovim = {
+  #   enable = true;
+  #
+  #   viAlias = true;
+  #   vimAlias = true;
+  #   vimdiffAlias = true;
+  # };
   home.packages = with pkgs; [ neofetch ];
 
   # Enable home-manager and git
