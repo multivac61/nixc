@@ -35,7 +35,7 @@
         "x86_64-darwin"
       ];
     in
-    rec {
+    {
       # Your custom packages
       # Acessible through 'nix build', 'nix shell', etc
       packages = forAllSystems (system:
@@ -72,11 +72,46 @@
                 (modulesPath + "/profiles/qemu-guest.nix")
                 disko.nixosModules.disko
               ];
-              disko.devices = import ./disk-config.nix {
-                lib = nixpkgs.lib;
+              disko.devices = {
+                disk = {
+                  vda = {
+                    device = "/dev/vda";
+                    type = "disk";
+                    content = {
+                      type = "gpt";
+                      partitions = {
+                        ESP = {
+                          size = "100M";
+                          type = "EF00";
+                          content = {
+                            type = "filesystem";
+                            format = "vfat";
+                            mountpoint = "/boot";
+                          };
+                        };
+                        root = {
+                          end = "-8G";
+                          content = {
+                            type = "filesystem";
+                            format = "ext4";
+                            mountpoint = "/";
+                          };
+                        };
+                        swap = {
+                          size = "100%";
+                          content = {
+                            type = "swap";
+                            randomEncryption = true;
+                            resumeDevice = true; # resume from hiberation from this device
+                          };
+                        };
+                      };
+                    };
+                  };
+                };
               };
               boot.loader.grub = {
-                devices = [ "/dev/sda" ];
+                devices = [ "/dev/vda" ];
                 efiSupport = true;
                 efiInstallAsRemovable = true;
               };
@@ -84,7 +119,7 @@
 
               users.users.root.openssh.authorizedKeys.keys = [
                 # change this to your ssh key
-                "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGbTIKIPtrymhvtTvqbU07/e7gyFJqNS4S0xlfrZLOaY olafur"
+                "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINNz3qigZrP1TDsPEkg+qGtvGrkZTEw0PMjj9d3MbcDS olafur@olafurs-mbp.lan"
               ];
             })
           ];

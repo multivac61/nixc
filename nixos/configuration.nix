@@ -60,29 +60,22 @@
     };
   };
 
-  # FIXME: Add the rest of your current configuration
-
-  # TODO: Set your hostname
   networking.hostName = "o";
 
-  # TODO: This is just an example, be sure to use whatever bootloader you prefer
   boot.loader.systemd-boot.enable = true;
 
-  # TODO: Configure your system-wide user settings (groups, etc), add more users as needed.
-  users.users = {
-    # FIXME: Replace with your username
-    o = {
-      # TODO: You can set an initial password for your user.
-      # If you do, you can skip setting a root password by passing '--no-root-passwd' to nixos-install.
-      # Be sure to change it (using passwd) after rebooting!
-      initialPassword = "g";
-      isNormalUser = true;
-      openssh.authorizedKeys.keys = [
-        # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
-      ];
-      # TODO: Be sure to add any other groups you need (such as networkmanager, audio, docker, etc)
-      extraGroups = [ "wheel" ];
-    };
+  users.users.o = {
+    hashedPassword = "$6$J4f.oGJGCqsbrdxy$DfQZenTBdsxgcN6Qv6zjLdcHoHf1GHtgCzSe5mdIwlgS0pCBncV8GvvcqQedLoxr4ggveMUkf.PTFptfH2FuQ/";
+    isNormalUser = true;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINNz3qigZrP1TDsPEkg+qGtvGrkZTEw0PMjj9d3MbcDS olafur@olafurs-mbp.lan"
+    ];
+    extraGroups = [ "wheel" ];
+    packages = with pkgs; [
+      neovim
+      git
+      starship
+    ];
   };
 
   # This setups a SSH server. Very important if you're setting up a headless system.
@@ -90,9 +83,9 @@
   services.openssh = {
     enable = true;
     # Forbid root login through SSH.
-    permitRootLogin = "no";
+    settings.PermitRootLogin = "no";
     # Use keys only. Remove if you want to SSH using password (not recommended)
-    passwordAuthentication = false;
+    settings.PasswordAuthentication = false;
   };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
