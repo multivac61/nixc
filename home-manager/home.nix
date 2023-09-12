@@ -41,15 +41,24 @@
     };
   };
 
-  # TODO: Set your username
   home = {
     username = "o";
     homeDirectory = "o";
   };
 
   # Add stuff for your user as you see fit:
-  # programs.neovim.enable = true;
-  # home.packages = with pkgs; [ steam ];
+  programs.neovim = {
+    enable = true;
+
+    viAlias = true;
+    vimAlias = true;
+    vimdiffAlias = true;
+
+    withNodeJs = true;
+    withPython3 = true;
+    withRuby = false;
+  };
+  home.packages = with pkgs; [ neofetch ];
 
   # Enable home-manager and git
   programs.home-manager.enable = true;

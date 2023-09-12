@@ -52,6 +52,8 @@
     # Making legacy nix commands consistent as well, awesome!
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
 
+    package = pkgs.nixUnstable;
+
     settings = {
       # Enable flakes and new 'nix' command
       experimental-features = "nix-command flakes";
@@ -87,8 +89,7 @@
     jq
     wget
     git
-    python
-    openssl
+    python3
     zsh
     neofetch
   ];
@@ -106,3 +107,5 @@
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "23.05";
 }
+}
+
