@@ -75,6 +75,7 @@
       neovim
       git
       starship
+      neofetch
     ];
   };
 
